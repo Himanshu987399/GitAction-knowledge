@@ -15,5 +15,5 @@ jobs:
       - uses: actions/checkout@v3
       - run: npm install sfdx-cli -g
       - run: echo "${{ vars.SALESFORCE_JWT_SECRET_KEY }}" > server.key
-      - run: sfdx auth:jwt:grant -u=${{ vars.SF_USERNAME }}  -f=server.key -i==${{ vars.SF_CLIENT_ID }} -r=${{vars.HUB_LOGIN_URL}}
+      - run: sfdx auth:jwt:grant -u=${{ vars.SF_USERNAME }}  -f=server.key -i=${{ vars.SF_CLIENT_ID }} -r=${{vars.HUB_LOGIN_URL}}
       - run: sfdx force:source:deploy -p force-app/main/default --testlevel=RunLocalTests -u myhuborg
