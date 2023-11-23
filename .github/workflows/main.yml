@@ -15,13 +15,6 @@ steps:
 - uses: actions/checkout@v2
 - run: npm install sfdx-cli -g
 - name: Set up Salesforce CLI
-run: 
-wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
-mkdir sfdx-cli
-tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
-echo 'export PATH=$PATH:$PWD/sfdx-cli/bin' >> $GITHUB_ENV
-sfdx --version
-
 - name: Authenticate with Salesforce
 run: |
 sfdx auth:jwt:grant --clientid ${{ secrets.SF_CLIENT_ID }} --jwtkeyfile ./server.key --username ${{ secrets.SF_USERNAME }} --setdefaultdevhubusername -a myhuborg
