@@ -1,0 +1,34 @@
+name: Salesforce Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Salesforce CLI
+      run: |
+        wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+        mkdir sfdx-cli
+        tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
+        echo 'export PATH=$PATH:$PWD/sfdx-cli/bin' >> $GITHUB_ENV
+        sfdx --version
+
+    - name: Authenticate with Salesforce
+      run: |
+        sfdx auth:jwt:grant --clientid ${{ secrets.SF_CLIENT_ID }} --jwtkeyfile ./server.key --username ${{ secrets.SF_USERNAME }} --setdefaultdevhubusername -a myhuborg
+
+    - name: Deploy to Salesforce
+      run: |
+        sfdx force:source:deploy -p force-app/main/default -u myhuborg
+
+    - name: Run Apex tests
+      run: |
+        sfdx force:apex:test:run -u myhuborg
