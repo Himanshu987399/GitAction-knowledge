@@ -15,5 +15,6 @@ steps:
 - uses: actions/checkout@v2
 - run: npm install sfdx-cli -g
 - run: echo "${{ vars.SALESFORCE_JWT_SECRET_KEY }}" > server.key
-- run: sfdx force:auth:jwt:grant --clientid=${{ vars.SF_CLIENT_ID }} --jwtkeyfile=server.key --username=${{ vars.SF_USERNAME }} --setdefaultdevhubusername -a myhuborg
-- run: sfdx force:source:deploy -p force-app/main/default --testlevel=RunLocalTests -u myhuborg
+- run: sfdx auth:jwt:grant -u=${{ vars.SF_USERNAME }} -f=server.key -i=${{ vars.SF_CLIENT_ID }} -r https://login.salesforce.com
+- run: sfdx force:source:deploy -p force-app/main/default --testlevel=RunLocalTests -u myhuborg sfdx force:auth:jwt:grant --clientid=${{ vars.SF_CLIENT_ID }} --jwtkeyfile=server.key --username=${{ vars.SF_USERNAME }} --setdefaultdevhubusername -a myhuborg
+
