@@ -14,6 +14,6 @@ steps:
 - run: echo "🔎 Retrieving ${{ github.ref }} from ${{ github.repository }}."
 - uses: actions/checkout@v2
 - run: npm install sfdx-cli -g
-- run: echo "${{ secrets.SALESFORCE_JWT_SECRET_KEY }}" > server.key
-- run: sfdx force:auth:jwt:grant --clientid=${{ secrets.SF_CLIENT_ID }} --jwtkeyfile=server.key --username=${{ secrets.SF_USERNAME }} --setdefaultdevhubusername -a myhuborg
+- run: echo "${{ vars.SALESFORCE_JWT_SECRET_KEY }}" > server.key
+- run: sfdx force:auth:jwt:grant --clientid=${{ vars.SF_CLIENT_ID }} --jwtkeyfile=server.key --username=${{ vars.SF_USERNAME }} --setdefaultdevhubusername -a myhuborg
 - run: sfdx force:source:deploy -p force-app/main/default --testlevel=RunLocalTests -u myhuborg
