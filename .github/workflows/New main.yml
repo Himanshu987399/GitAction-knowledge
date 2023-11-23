@@ -13,6 +13,8 @@ jobs:
       - run: echo "🐧 GitHub Action running on ${{ runner.os }}"
       - run: echo "🔎 Retrieving ${{ github.ref }} from ${{ github.repository }}."
       - uses: actions/checkout@v2
+        with:
+          node-version: 20
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
