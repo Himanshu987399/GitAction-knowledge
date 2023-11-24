@@ -1,0 +1,44 @@
+name: Salesforce Deployment
+on:
+  push:
+    branches:
+      - dev
+      - qa
+      - production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Environment Variables
+        run: |
+          if [ "${{ github.event_name }}" == "push" ]; then
+            if [ "${{ github.ref }}" == "refs/heads/dev" ]; then
+              echo "DEV_ORG"
+              echo "HUB_LOGIN_URL=dev_login_url" >> $GITHUB_ENV
+              echo "SALESFORCE_JWT_SECRET_KEY=dev_secret_key" >> $GITHUB_ENV
+              echo "SF_CLIENT_ID=dev_client_id" >> $GITHUB_ENV
+              echo "SF_USERNAME=dev_username" >> $GITHUB_ENV
+            elif [ "${{ github.ref }}" == "refs/heads/qa" ]; then
+              echo "QA_ORG"
+              echo "HUB_LOGIN_URL=qa_login_url" >> $GITHUB_ENV
+              echo "SALESFORCE_JWT_SECRET_KEY=qa_secret_key" >> $GITHUB_ENV
+              echo "SF_CLIENT_ID=qa_client_id" >> $GITHUB_ENV
+              echo "SF_USERNAME=qa_username" >> $GITHUB_ENV
+            elif [ "${{ github.ref }}" == "refs/heads/production" ]; then
+              echo "PROD_ORG"
+              echo "HUB_LOGIN_URL=prod_login_url" >> $GITHUB_ENV
+              echo "SALESFORCE_JWT_SECRET_KEY=prod_secret_key" >> $GITHUB_ENV
+              echo "SF_CLIENT_ID=prod_client_id" >> $GITHUB_ENV
+              echo "SF_USERNAME=prod_username" >> $GITHUB_ENV
+            else
+              echo "Unknown branch. No deployment will be done."
+              exit 1
+            fi
+          fi
+      - name: Deploy to Salesforce
+        run: |
+          if [ "${{ github.event_name }}" == "push" ]; then
+            sfdx auth:jwt:grant -u=${{ env.SF_USERNAME }} -f=server.key -i=${{ env.SF_CLIENT_ID }} -r=${{ env.HUB_LOGIN_URL }}
+            sfdx force:source:deploy -p force-app/main/default -u=${{ env.SF_USERNAME }}
+          fi
