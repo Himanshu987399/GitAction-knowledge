@@ -1,7 +1,7 @@
 **Steps of GitHub Action**
 Steps 1:Create a salesforce.crt and salesforce.key file for JWT authentication.
         Use the following command to obtain these files: openssl req -x509 -sha256 -nodes -days 36500 -newkey rsa:2048 -keyout salesforce.key -out salesforce.crt
-        Provide details like city, state, and country name.
+        Provide details like city, state, and country name. 
         You will now have two files named salesforce.crt and salesforce.key.
 Steps 2:Create a connected app in your Salesforce org.
         ![Screenshot from 2023-11-24 10-55-12](https://github.com/Himanshu987399/GitAction/assets/86918713/bf7c46ff-cfa6-48e7-b57a-712d3ccc76c8)
