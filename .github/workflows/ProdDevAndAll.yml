@@ -2,6 +2,7 @@ name: prodAndAl
 on:
   push:
     branches:
+      - main
       - dev
       - qa
       - production
