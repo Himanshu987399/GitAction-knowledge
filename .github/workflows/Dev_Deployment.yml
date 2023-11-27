@@ -3,7 +3,7 @@ name: Deployment to QA
 on:
   push:
     branches:
-      - qa
+      - dev
 jobs:
   deploy: 
     runs-on: ubuntu-latest
@@ -14,6 +14,6 @@ jobs:
       - run: echo "🔎 Retrieving ${{ github.ref }} from ${{ github.repository }}."
       - uses: actions/checkout@v3
       - run: npm install sfdx-cli -g
-      - run: echo "${{ vars.SALESFORCE_JWT_SECRET_KEY_QA }}" > server.key
-      - run: sfdx auth:jwt:grant -u=${{ vars.SF_USERNAME }}  -f=server.key -i=${{ vars.SF_CLIENT_ID_QA }} -r=${{vars.HUB_LOGIN_URL}}
+      - run: echo "${{ vars.SALESFORCE_JWT_SECRET_KEY_DEV }}" > server.key
+      - run: sfdx auth:jwt:grant -u=${{ vars.SF_USERNAME }}  -f=server.key -i=${{ vars.SF_CLIENT_ID_DEV }} -r=${{vars.HUB_LOGIN_URL}}
       - run: sfdx force:source:deploy -p force-app/main/default -u=${{ vars.SF_USERNAME }}
