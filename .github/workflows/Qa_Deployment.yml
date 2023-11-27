@@ -1,4 +1,4 @@
-name: Deployment to QA
+name: Deployment to QA Qrg
 
 on:
   push:
