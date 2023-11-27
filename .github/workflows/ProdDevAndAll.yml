@@ -13,10 +13,12 @@ jobs:
     steps:
       - name: Set Environment Variables
         run: |
+          - uses: actions/checkout@v3
+          - run: npm install sfdx-cli -g
           if [ "${{ github.event_name }}" == "push" ]; then
             if [ "${{ github.ref }}" == "refs/heads/dev" ]; then
               echo "DEV_ORG"
-              echo "HUB_LOGIN_URL=dev_login_url" >> $GITHUB_ENV
+              echo "HUB_LOGIN_URL=${{ vars.SF_USERNAME }}" >> $GITHUB_ENV
               echo "SALESFORCE_JWT_SECRET_KEY=${{ vars.SALESFORCE_JWT_SECRET_KEY }}" >> $GITHUB_ENV
               echo "SF_CLIENT_ID=${{ vars.SF_CLIENT_ID }}" >> $GITHUB_ENV
               echo "SF_USERNAME=${{ vars.SF_USERNAME }}" >> $GITHUB_ENV
@@ -40,6 +42,6 @@ jobs:
       - name: Deploy to Salesforce
         run: |
           if [ "${{ github.event_name }}" == "push" ]; then
-            sfdx auth:jwt:grant -u=${{ env.SF_USERNAME }} -f=server.key -i=${{ env.SF_CLIENT_ID }} -r=${{ env.HUB_LOGIN_URL }}
+            sfdx auth:jwt:grant -u=${{ env.SF_USERNAME }} -f=${{ env.SALESFORCE_JWT_SECRET_KEY }} -i=${{ env.SF_CLIENT_ID }} -r=${{ env.HUB_LOGIN_URL }}
             sfdx force:source:deploy -p force-app/main/default -u=${{ env.SF_USERNAME }}
           fi
