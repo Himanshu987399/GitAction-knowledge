@@ -17,9 +17,9 @@ jobs:
             if [ "${{ github.ref }}" == "refs/heads/dev" ]; then
               echo "DEV_ORG"
               echo "HUB_LOGIN_URL=dev_login_url" >> $GITHUB_ENV
-              echo "SALESFORCE_JWT_SECRET_KEY=dev_secret_key" >> $GITHUB_ENV
-              echo "SF_CLIENT_ID=dev_client_id" >> $GITHUB_ENV
-              echo "SF_USERNAME=dev_username" >> $GITHUB_ENV
+              echo "SALESFORCE_JWT_SECRET_KEY=${{ vars.SALESFORCE_JWT_SECRET_KEY }}" >> $GITHUB_ENV
+              echo "SF_CLIENT_ID=${{ vars.SF_CLIENT_ID }}" >> $GITHUB_ENV
+              echo "SF_USERNAME=${{ vars.SF_USERNAME }}" >> $GITHUB_ENV
             elif [ "${{ github.ref }}" == "refs/heads/qa" ]; then
               echo "QA_ORG"
               echo "HUB_LOGIN_URL=qa_login_url" >> $GITHUB_ENV
